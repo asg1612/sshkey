@@ -1,22 +1,22 @@
 - name: create admin group
-  action: group name=admin gid=1100 system=no
-  sudo: yes
+  group: name=admin gid=1100 system=no
+  become: true
   tags: sshkey
 
 - name: create user
-  action: user name=informatica state=present group=admin shell=/bin/bash uid=1000
-  sudo: yes
+  user: name=informatica state=present group=admin shell=/bin/bash uid=1000
+  become: true
   tags: sshkey
 
 - name: setup authorized key
-  action: authorized_key user=informatica key='$FILE(~/.ssh/id_rsa.pub)'
-  sudo: yes
+  authorized_key: user=informatica key='$FILE(~/.ssh/id_rsa.pub)'
+  become: true
   tags:
-      - sshkey
+    - sshkey
 
 - name: write the sudoers file custom
-  action: template src=custom_sudo.j2 dest=/etc/sudoers.d/custom
-               owner=root group=root mode=0400
-  sudo: yes
+  template: src=custom_sudo.j2 dest=/etc/sudoers.d/custom
+           owner=root group=root mode=0400
+  become: true
   tags:
-      - sshkey
+    - sshkey
