@@ -9,7 +9,7 @@
   tags: sshkey
 
 - name: setup authorized key
-  authorized_key: user=informatica key='$FILE(~/.ssh/id_rsa.pub)'
+  authorized_key: user=informatica key="{{ lookup('file', lookup('env','HOME') + '/.ssh/id_rsa.pub') }}"
   become: true
   tags:
     - sshkey
